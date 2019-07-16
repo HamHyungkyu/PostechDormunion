@@ -42,11 +42,11 @@ module.exports = {
   plugins: [
     '@/plugins/vuetify'
   ],
-
   /*
-  ** Nuxt.js modules
+  ** Modules
   */
   modules: [
+  '@nuxtjs/axios',
   ],
 
   /*

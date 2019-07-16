@@ -82,3 +82,6 @@ dist
 
 # Service worker
 sw.*
+
+# Database config file 공개안함
+server/db_config.js

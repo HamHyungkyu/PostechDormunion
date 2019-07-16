@@ -1,44 +1,30 @@
 var express = require('express');
 var router = express.Router();
-
+var query = require('../db_query')
 router.get('/list', function(req, res){
-  var shops=  [
-    {
-      title : '중화음식',
-      shops: [
-        {
-          title : '홍운반점',
-          rating : 3.4,
-          numOfReview: 123,
-         // imgUrl: require('@/static/hongun.jpg'),
-          tel: '054-279-2223'
-        },
-        {
-          title : '홍운반점',
-          rating : 3.4,
-          numOfReview: 123,
-         // imgUrl: require('@/static/hongun.jpg'),
-          tel: '054-279-2223'
-        },
-        {
-          title : '홍운반점',
-          rating : 3.4,
-          numOfReview: 123,
-         // imgUrl: require('@/static/hongun.jpg'),
-          tel: '054-279-2223'
+      //Database Select query 
+      query.query('select name, category, tel, opening_hour, closing_hour from shop_list', function(err, rows){
+      if(err){ 
+        console.log(err)
+        res.status(500)
+        return
+      }
+      var data = {}
+      //Category별 분류
+      for(row of rows){
+        if( data[row.category] === undefined){
+          data[row.category] = []
         }
-      ]
-    },
-    {
-      title : '정식',
-      shops: []
-    }
-  ]
-  res.send(shops)
+        data[row.category].push(row)
+      }
+      res.send(data)})
 })
 
 router.get('/detail', function(req, res){
-
+  var shop = req.query.shop;
+  query.query('select * from food_list where shop = \''+ shop + '\'', function(err, rows){
+    res.send(rows)
+  })
 })
 
 module.exports = router;

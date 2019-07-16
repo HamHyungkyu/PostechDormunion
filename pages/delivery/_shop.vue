@@ -67,6 +67,10 @@ export default {
         }
       }
     }
-  }
+  },
+  asyncData(context) {
+    
+  },
+
 }
 </script>

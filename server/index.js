@@ -24,7 +24,7 @@ async function start() {
   }
 
   //shops(배달업체) route middleware 연결
-  app.use('/api/shops', shops)
+  app.use('/api/delivery', shops)
 
   // Give nuxt middleware to express
   app.use(nuxt.render)

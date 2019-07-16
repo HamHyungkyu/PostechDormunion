@@ -22,9 +22,27 @@ router.get('/list', function(req, res){
 
 router.get('/detail', function(req, res){
   var shop = req.query.shop;
-  query.query('select * from food_list where shop = \''+ shop + '\'', function(err, rows){
-    res.send(rows)
+  query.query('select * from shop_list where name = \"' + shop + '\"', function(err, rows){
+    var data = {}
+    if(err){ 
+      console.log(err)
+      res.status(500)
+      return
+    }
+    data.info = rows[0]
+    data.foods = {}
+    query.query('select * from food_list where shop = \"'+ shop + '\"', function(err, rows){
+      for(row of rows){
+        if(row.category === null) continue
+        if( data.foods[row.category] === undefined){
+          data.foods[row.category] = []
+        }
+        data.foods[row.category].push(row)
+      }
+      res.send(data)
+    })
   })
+
 })
 
 module.exports = router;

@@ -1,6 +1,6 @@
 <template>
 <!-- 음식점 리스트에서 음식점 카드 클릭시, 배달업체 상세페이지로 이동 -->
-  <v-card ripple class="dilivery-shop" :to="'/delivery/'+shop.name">
+  <v-card ripple class="dilivery-shop" :to="'/delivery/shop?shop='+shop.name">
     <v-layout 
     row>
       <v-flex class="thumb-nail" xs4>

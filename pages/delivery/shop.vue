@@ -11,7 +11,7 @@
         <v-flex xs8 sm9 style="padding-left: 10px">
           <v-icon>phone</v-icon> <a :tel="info.tel">{{info.tel}}</a><br/>
           <v-icon>star</v-icon>{{info.rating}}<br/>
-          <b>상태</b> {{info.status}}<br/>
+          <b>상태</b> {{status}}<br/>
           <b>영업시간</b> {{info.opening_hour}} - {{info.closing_hour}}<br/>
           <b>메모</b>{{info.memo}}
         </v-flex>
@@ -44,12 +44,39 @@ export default {
       info: {}
     }
   },
+  computed: {
+    status: function(){
+      var date = new Date()
+      var hour = date.getHours()
+      var minutes = date.getMinutes()
+      var timeNow = hour * 60 + minutes
+
+      var opening = this.info.opening_hour.split(':')
+      var openTime = parseInt(opening[0])*60 + parseInt(opening[1])
+      var closing = this.info.closing_hour.split(':')
+      var closeTime = parseInt(closing[0]) * 60 + parseInt(closing[1])
+      if (openTime > closeTime) {
+        closeTime += 24 * 60
+      }
+      console.log(timeNow)
+      console.log(openTime)
+            console.log(closeTime)
+      if(openTime <= timeNow && timeNow <= closeTime){
+        return "영업중"
+      }
+      else{
+        return "영업종료"
+      }
+    }
+  },
   asyncData(context) {
     return context.app.$axios('/api/delivery/detail?shop=' + context.query.shop).then(function(res){
        if(res.status !== 200){
          console.log(res)
          return {}
        }
+                console.log(res)
+
        return res.data
     })
   },

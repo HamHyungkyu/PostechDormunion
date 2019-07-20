@@ -48,6 +48,13 @@ module.exports = {
   modules: [
   '@nuxtjs/axios',
   ],
+  axios: {
+    // See https://github.com/nuxt-community/axios-module#options
+    baseURL:
+      process.env.NODE_ENV === 'dev'
+        ? 'http://localhost:3000'
+        : 'http://106.10.43.71:3000'
+  },
 
   /*
   ** Build configuration

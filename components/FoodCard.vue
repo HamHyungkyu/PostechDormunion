@@ -1,7 +1,7 @@
 <template>
   <v-card class="dilivery-shop">
-      <v-layout 
-      row>
+    
+      <v-layout row>
         <v-flex class="thumb-nail" xs4>
           <v-responsive :aspect-ratio="1/1">
             <v-avatar class="avatar" style="height: auto;" size="100%">
@@ -10,11 +10,15 @@
             </v-avatar>
           </v-responsive>
         </v-flex>
-        <v-flex class="shop-info" xs8>
-          <h3><div class="text-truncate">{{food.name}}</div></h3>
-          <span>₩{{ food.price }}</span><br/>
-          <div class="text-truncate">{{food.option}}</div><br/>
-          <v-icon>thumb_up</v-icon>{{food.thumb_up}}<v-icon>thumb_down</v-icon>{{food.thumb_down}}
+        <v-flex xs8>
+          <div class="shop-info">
+            <h3><div class="text-truncate">{{food.name}}</div></h3>
+            <span>₩{{ food.price }}</span><br/>
+            <div class="text-truncate">{{food.option}}</div>
+          </div>
+          <div class="recommand">
+            <v-icon>thumb_up</v-icon>{{food.thumb_up}}<v-icon>thumb_down</v-icon>{{food.thumb_down}}
+          </div>
         </v-flex>
       </v-layout>
   </v-card>
@@ -25,14 +29,18 @@ export default {
 }
 </script>
 <style>
-.delvery-shop {
-  max-height: 100%;
+.dilivery-shop {
+  height: 100%;
 }
 .thumb-nail {
   padding: 5px;
 }
 .shop-info {
   padding: 5px;
-  width: 100%
+}
+.recommand {
+  position: absolute;
+  bottom: 5px;
+  right: 10px;
 }
 </style>

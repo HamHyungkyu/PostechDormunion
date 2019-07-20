@@ -31,8 +31,10 @@
       app
     >
       <v-toolbar-side-icon @click="drawer = !drawer" />
-      <v-toolbar-title>
-      <logo class="logo"  width="200"/>
+      <v-toolbar-title >
+        <router-link to="/">
+          <logo class="logo"  width="200"/>
+        </router-link>
       </v-toolbar-title>
       <v-spacer />
     </v-toolbar>

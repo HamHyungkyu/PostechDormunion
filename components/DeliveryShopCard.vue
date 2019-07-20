@@ -4,12 +4,13 @@
     <v-layout 
     row>
       <v-flex class="thumb-nail" xs4>
-        <v-img  :aspect-ratio="1/1" height="100%" :src="shop.imgUrl"/>
+        <v-img v-if="shop.imgUrl" :aspect-ratio="1/1" width="100%" :src="shop.imgUrl"/>
+        <v-img v-else :aspect-ratio="1/1" width="100%" :src="require('@/static/foodshop.png')" />
       </v-flex>
       <v-flex class="shop-info" xs8>
-        <h3>{{shop.name}}</h3>
+        <h3><div class="text-truncate">{{shop.name}}</div></h3>
+        <span>{{shop.status}}</span><br/>
         <v-icon>phone</v-icon> <a :tel="shop.tel">{{shop.tel}}</a><br/>
-        <v-icon>star</v-icon>{{shop.rating}}
       </v-flex>
     </v-layout>
   </v-card>

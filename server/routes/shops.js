@@ -12,6 +12,7 @@ router.get('/list', function(req, res){
       var data = {}
       //Category별 분류
       for(row of rows){
+        row.status = calculateStatus(row)
         if( data[row.category] === undefined){
           data[row.category] = []
         }
@@ -30,6 +31,7 @@ router.get('/detail', function(req, res){
       return
     }
     data.info = rows[0]
+    data.info.status = calculateStatus(rows[0])
     data.foods = {}
     query.query('select * from food_list where shop = \"'+ shop + '\"', function(err, rows){
       for(row of rows){
@@ -45,4 +47,25 @@ router.get('/detail', function(req, res){
 
 })
 
+var calculateStatus = function(row){
+  var date = new Date()
+  var hour = date.getHours()
+  var minutes = date.getMinutes()
+  var timeNow = hour * 60 + minutes
+
+  var opening = row.opening_hour.split(':')
+  var openTime = parseInt(opening[0])*60 + parseInt(opening[1])
+  var closing = row.closing_hour.split(':')
+  var closeTime = parseInt(closing[0]) * 60 + parseInt(closing[1])
+  if (openTime > closeTime) {
+    closeTime += 24 * 60
+  }
+
+  if(openTime <= timeNow && timeNow <= closeTime){
+    return "영업중"
+  }
+  else{
+    return "영업종료"
+  }
+}
 module.exports = router;

@@ -6,14 +6,14 @@
           <h1>{{$route.query.shop}}</h1>
         </v-flex>
         <v-flex xs4 sm3>
-            <v-img  :aspect-ratio="1/1" width="100%" :src="imgUrl"/>
+            <v-img v-if="imgUrl" :aspect-ratio="1/1" width="100%" :src="imgUrl"/>
+            <v-img v-else :aspect-ratio="1/1" width="100%" :src="require('@/static/foodshop.png')" />
         </v-flex>
         <v-flex xs8 sm9 style="padding-left: 10px">
           <v-icon>phone</v-icon> <a :tel="info.tel">{{info.tel}}</a><br/>
-          <v-icon>star</v-icon>{{info.rating}}<br/>
-          <b>상태</b> {{status}}<br/>
+          <b>상태</b> {{info.status}}<br/>
           <b>영업시간</b> {{info.opening_hour}} - {{info.closing_hour}}<br/>
-          <b>메모</b>{{info.memo}}
+          <b>메모</b><span v-html="info.memo"></span>
         </v-flex>
       </v-layout> 
     </v-card-title>
@@ -40,7 +40,6 @@ export default {
   data() {
     return{
       foods: {},
-      imgUrl: require('@/static/hongun.jpg'),
       info: {}
     }
   },
@@ -75,8 +74,7 @@ export default {
          console.log(res)
          return {}
        }
-                console.log(res)
-
+       res.data.info.memo = res.data.info.memo.replace(/(?:\r\n|\r|\n)/g, '<br />')
        return res.data
     })
   },

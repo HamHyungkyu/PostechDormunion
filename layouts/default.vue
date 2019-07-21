@@ -7,6 +7,12 @@
       fixed
       app
     >
+    <v-toolbar flat>
+      <v-icon large>account_circle</v-icon>
+      <v-btn flat>로그인</v-btn>
+      <v-btn flat>회원가입</v-btn>
+
+    </v-toolbar>
       <v-list>
         <v-list-tile
           v-for="(item, i) in items"

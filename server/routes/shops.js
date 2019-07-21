@@ -3,7 +3,7 @@ var router = express.Router();
 var query = require('../db_query')
 router.get('/list', function(req, res){
       //Database Select query 
-      query.query('select name, category, tel, opening_hour, closing_hour from shop_list', function(err, rows){
+      query.query('select name, category, tel, opening_hour, closing_hour from shop_list WHERE is_deleted = 0 AND market_status = 0', function(err, rows){
       if(err){ 
         console.log(err)
         res.status(500)
@@ -23,7 +23,7 @@ router.get('/list', function(req, res){
 
 router.get('/detail', function(req, res){
   var shop = req.query.shop;
-  query.query('SELECT * FROM shop_list WHERE name = \"' + shop + '\"', function(err, rows){
+  query.query('SELECT * FROM shop_list WHERE is_deleted = 0 AND name = \"' + shop + '\"', function(err, rows){
     var data = {}
     if(err){ 
       console.log(err)
@@ -33,7 +33,7 @@ router.get('/detail', function(req, res){
     data.info = rows[0]
     data.info.status = calculateStatus(rows[0])
     data.foods = {}
-    query.query('SELECT * FROM food_list WHERE shop = \"'+ shop + '\"', function(err, rows){
+    query.query('SELECT * FROM food_list WHERE is_deleted = 0 AND shop = \"'+ shop + '\"', function(err, rows){
       for(row of rows){
         if(row.category === null) continue
         if( data.foods[row.category] === undefined){
@@ -55,7 +55,7 @@ router.get('/thumbup', function(req, res){
       ids : []
     }
   } 
-  else if( req.session.user.ids.includes(id)){
+  else if( req.session.user.ids.includes(id)){ //Session에 id가 이미 저장되어있면 중복불가
     res.status(200)
     res.send('DUPLLICATED_ID')
     return
@@ -80,7 +80,7 @@ router.get('/thumbdown', function(req, res){
       ids : []
     }
   } 
-  else if( req.session.user.ids.includes(id)){
+  else if( req.session.user.ids.includes(id)){ //Session에 id가 이미 저장되어있면 중복불가
     res.status(200)
     res.send('DUPLLICATED_ID')
     return

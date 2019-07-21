@@ -17,15 +17,23 @@
             <div class="text-truncate">{{food.option}}</div>
           </div>
           <div class="recommand">
-            <v-icon>thumb_up</v-icon>{{food.thumb_up}}<v-icon>thumb_down</v-icon>{{food.thumb_down}}
+            <thumb-up :food="food"/>
+            <thumb-down :food="food"/>
           </div>
         </v-flex>
       </v-layout>
   </v-card>
 </template>
 <script>
+import ThumbUp from '@/components/ThumbUp'
+import ThumbDown from '@/components/ThumbDown'
+
 export default {
-  props : ['food']
+  props : ['food'],
+  components: {
+    ThumbUp,
+    ThumbDown
+  }
 }
 </script>
 <style>

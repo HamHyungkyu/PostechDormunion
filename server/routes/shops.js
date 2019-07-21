@@ -23,7 +23,7 @@ router.get('/list', function(req, res){
 
 router.get('/detail', function(req, res){
   var shop = req.query.shop;
-  query.query('select * from shop_list where name = \"' + shop + '\"', function(err, rows){
+  query.query('SELECT * FROM shop_list WHERE name = \"' + shop + '\"', function(err, rows){
     var data = {}
     if(err){ 
       console.log(err)
@@ -33,7 +33,7 @@ router.get('/detail', function(req, res){
     data.info = rows[0]
     data.info.status = calculateStatus(rows[0])
     data.foods = {}
-    query.query('select * from food_list where shop = \"'+ shop + '\"', function(err, rows){
+    query.query('SELECT * FROM food_list WHERE shop = \"'+ shop + '\"', function(err, rows){
       for(row of rows){
         if(row.category === null) continue
         if( data.foods[row.category] === undefined){
@@ -45,6 +45,57 @@ router.get('/detail', function(req, res){
     })
   })
 
+})
+
+//추천 1개 추가
+router.get('/thumbup', function(req, res){
+  var id = req.query.id
+  if(!req.session.user){
+    req.session.user = {
+      ids : []
+    }
+  } 
+  else if( req.session.user.ids.includes(id)){
+    res.status(200)
+    res.send('DUPLLICATED_ID')
+    return
+  }
+  query.query('UPDATE food_list SET thumb_up = thumb_up + 1 WHERE id = ' + id, function(err, result){
+    if(err){
+      res.status(400)
+      res.send(err)
+      return
+    }
+    req.session.user.ids.push(id)
+    res.status(200)
+    res.send('SUCCESS')
+  })
+})
+
+//비추천 1개 추가
+router.get('/thumbdown', function(req, res){
+  var id = req.query.id
+  if(!req.session.user){
+    req.session.user = {
+      ids : []
+    }
+  } 
+  else if( req.session.user.ids.includes(id)){
+    res.status(200)
+    res.send('DUPLLICATED_ID')
+    return
+  }
+  query.query('UPDATE food_list SET thumb_down = thumb_down + 1 WHERE id = ' + id, function(err, result){
+    console.log(result)
+    if(err){
+      res.status(400)
+      res.send(err)
+      return
+    }
+    req.session.user.ids.push(id)
+    res.status(200)
+    res.send('SUCCESS')
+  })
 })
 
 var calculateStatus = function(row){
